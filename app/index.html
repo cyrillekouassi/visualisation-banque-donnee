@@ -1,0 +1,268 @@
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Visualisation de données</title>
+
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/tree.css">
+    <link rel="shortcut icon" href="images/charts_128_128.png">
+    <link rel="stylesheet" href="_librairie/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="_librairie/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="_librairie/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="_librairie/prettify/prettify.min.css">
+    <link rel="stylesheet" href="_librairie/morris/morris.css">
+
+</head>
+<body ng-app="banqueDonnee">
+<div class="voletHaut">
+    <div ng-show="">
+
+    </div>
+
+</div>
+<div class="container-fluid">
+    <!--div class="row"-->
+    <!--div class="col-md-3 cleanMargDroit"-->
+    <div class="groupeLeft">
+        <div ng-style="hauteurBody" class="voletParametre">
+            <div class="panel-group">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a>Unité d'organisation</a>
+                        </h4>
+                    </div>
+                    <div>
+                        <div class="orgPanel">
+                            <org-tree org-data="arbre" multi-select="false"
+                                      get-allselect="toutes_les_donnees(lesSelects)"></org-tree>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info deletePadding" style="margin: 0px; padding: 0px;">
+                    <div class="panel-heading deleteBottomSpace">
+                        <h4 class="panel-title">Donnee</h4>
+                    </div>
+                    <div>
+                        <div class="panel-body deletePadding dataPanel" style="margin: 0px; padding: 0px;">
+                            <div class="form-group deleteBottomSpace deletePadding">
+                                <select class="form-control" style="margin-top: 5px;" ng-model="type"
+                                        ng-change="choisirType(type)"
+                                        ng-options="form.id as form.name for form in TypeData">
+                                </select>
+                            </div>
+                            <div style="margin: 0px; padding: 0px;">
+                                <span class="deleteBottomSpace">Element de données</span>
+
+                                <br/>
+                                <div style="border-top: black solid 1px;">
+                                    <div class="row" style="margin: 0px; padding: 0px">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                             style="margin: 0px; padding: 0px;">
+                                            <div class="pull-left panelLef" style="margin: 5px;">
+                                                <div ng-repeat="element in ListDataElement" class="pointerList"
+                                                     ng-dblclick="dataSelected(element,$index)">{{element.name}}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                             style="margin: 0px; padding: 0px">
+                                            <div class="pull-right panelRigth" style="margin: 5px;">
+                                                <div ng-repeat="selected in DataElementSelected" class="pointerList"
+                                                     ng-dblclick="deleteSelected(selected,$index)"
+                                                     style="margin-left: 8%">{{selected.name}}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a>Periode</a>
+                        </h4>
+                    </div>
+                    <div>
+                        <div class="panel-body">
+                            <div class="input-group">
+                                <select class="form-control" ng-model="laperiode"
+                                        ng-change="periodeSelected(laperiode,annee)"
+                                        ng-options="periode.id as periode.name for periode in typePeriode">
+                                </select>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" ng-click="anneePreced()">
+                                        <i class="icon-chevron-left"></i> Prev
+                                    </button>
+                                    <button class="btn btn-default" type="submit" ng-click="anneeSuivant()">
+                                        Next <i class="icon-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="border-top: black solid 1px;">
+                                <div class="row" style="margin: 0px; padding: 0px">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                         style="margin: 0px; padding: 0px;">
+                                        <div class="pull-left periodeLef" style="margin: 5px;">
+                                            <div ng-repeat="periode in ListPeriode" class="pointerList"
+                                                 ng-dblclick="periodeSelectionner(periode,$index)">{{periode.name}}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                                         style="margin: 0px; padding: 0px">
+                                        <div class="pull-right periodeRigth" style="margin: 5px;">
+                                            <div ng-repeat="periode in periodeSelect" class="pointerList"
+                                                 ng-dblclick="deletePeriode(periode,$index)"
+                                                 style="margin-left: 8%">{{periode.name}}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="bas"></div>
+        </div>
+    </div>
+    <!--div class="col-md-9" style="margin: 0px; padding: 0px"-->
+    <div class="groupeRigth">
+        <div>
+            <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="" class="navbar-brand" ng-click="visualiser()">Visualiser</a>
+                    </div>
+                    <ul class="nav navbar-nav pull-right">
+                        <li ng-class="{'active': presentation=='tableau'}"><a href=""
+                                                                              ng-click="typePresentation('tableau')">TABLEAU</a>
+                        </li>
+                        <li ng-class="{'active': presentation=='graphique'}"><a href=""
+                                                                                ng-click="typePresentation('graphique')">GRAPHIQUE</a>
+                        </li>
+                        <li ng-class="{'active': presentation=='carte'}"><a href="" ng-click="typePresentation('carte')">CARTE</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <ul class="nav navbar-nav navbar-right"style="margin-right: 5px;" ng-if="presentation=='graphique'">
+                <li ng-class="{'graphicSelect': graph=='barre'}"><a href="" style="padding: 0px;" ng-click="selectionGraphique('barre')"><img src="images/graphicIcon/barreBlue.png" style="height: 50px; width: 50px"></a></li>
+                <li ng-class="{'graphicSelect': graph=='line'}"><a href="" style="padding: 0px; margin-left: 5px;" ng-click="selectionGraphique('line')"><img src="images/graphicIcon/line.png" style="height: 50px; width: 50px"></a></li>
+                <li ng-class="{'graphicSelect': graph=='carmembert'}"><a href="" style="padding: 0px; margin-left: 5px;" ng-click="selectionGraphique('carmembert')"><img src="images/graphicIcon/carmembert.png" style="height: 50px; width: 50px"></a></li>
+            </ul>
+            <!--<div style="margin-top: 0px; margin-right: 0px;" class="pull-right">-->
+            <!--<div class="btn-group" role="group" aria-label="...">-->
+            <!--<a href="" ng-class="{'graphicSelect': graph=='barre'}"><img src="images/graphicIcon/barreBlue.png" style="height: 50px; width: 50px"></a>-->
+            <!--<a href="" ng-class="{'graphicSelect': graph=='line'}"><img src="images/graphicIcon/line.png" style="height: 50px; width: 50px"></a>-->
+            <!--<a href="" ng-class="{'graphicSelect': graph=='carmembert'}"><img src="images/graphicIcon/carmembert.png" style="height: 50px; width: 50px"></a>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div class="container" style="margin-top: 50px;">
+
+            <!-- les tableaux -->
+            <div ng-if="presentation=='tableau'">
+                <div ng-controller="tableauCTRL">
+                    <div class="container" ng-if="tableauAffiche">
+                        <table class="table table-bordered" style="font-size: 0.9em;">
+                            <thead class="default-color-dark text-center white-text">
+                            <tr>
+                                <th>Données</th>
+                                <th ng-repeat="periode in lesPeriode track by $index">
+                                    {{periode.name}}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <tr ng-repeat="data in listElementData track by $index">
+                                <th scope="row" class="align-middle primary-color white-text">{{data.name}}</th>
+                                <td ng-repeat="valeur in data.valeur track by $index" class="align-middle">
+                                    {{valeur}}
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- les graphiques morrisjs ->
+            <div ng-if="presentation=='graphique'">
+                <div ng-controller="graphiqueCTRL">
+                    <div ng-if="graph == 'barre'">
+                        <div class="text-center">
+                            <label class="label label-success">Banque Chart</label>
+                            <div id="barBanq" ></div>
+                        </div>
+                    </div>
+                    <div ng-if="graph == 'line'">
+                        <label class="label label-success">Line Chart</label>
+                        <div id="lineChart"></div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            -->
+            <!-- les graphiques morrisjs -->
+
+            <!-- les cartes -->
+            <div ng-if="presentation=='carte'">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--/div-->
+</div>
+
+<script src="_librairie/jquery/jquery-3.2.1.min.js"></script>
+<script src="_librairie/angular/angular.min.js"></script>
+<script src="_librairie/angular/angular-resource.min.js"></script>
+<script src="_librairie/angular/angular-ui-router.min.js"></script>
+
+<script src="_librairie/bootstrap/dist/js/bootstrap.min.js"></script>
+<!--<script src="_librairie/raphael/raphael.min.js"></script>
+<script src="_librairie/prettify/prettify.min.js"></script>
+<script src="_librairie/morris/morris.min.js"></script>-->
+
+<script src="_librairie/chartjs/Chart.min.js"></script>
+<script src="_librairie/angularChart/angular-chart.min.js"></script>
+
+
+<script src="js/app.js"></script>
+<script src="js/controllers/tableau.js"></script>
+<script src="js/controllers/graphique.js"></script>
+<script src="js/services/usersResource.js"></script>
+<script src="js/services/orgUnitResource.js"></script>
+<script src="js/services/dataElementsResource.js"></script>
+<script src="js/services/indicateursResource.js"></script>
+<script src="js/services/analytics.js"></script>
+<script src="js/directives/tree_Directive.js"></script>
+
+</body>
+</html>

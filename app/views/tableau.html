@@ -1,0 +1,21 @@
+<div class="container">
+    <table class="table table-bordered" style="font-size: 0.9em;">
+        <thead class="default-color-dark text-center white-text">
+        <tr>
+            <th>Données</th>
+            <th ng-repeat="periode in lesPeriode track by $index">
+                {{periode.name}}
+            </th>
+        </tr>
+        </thead>
+        <tbody class="text-center">
+        <tr ng-repeat="data in listElementData track by $index">
+            <th scope="row" class="align-middle primary-color white-text">{{data.name}}</th>
+            <td ng-repeat="valeur in data.valeur track by $index" class="align-middle">
+                {{valeur}}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
